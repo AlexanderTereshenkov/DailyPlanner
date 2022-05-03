@@ -22,5 +22,7 @@ public interface TaskDao {
 
     @Delete
     void delete(OneTask oneTask);
+    @Query("SELECT * from oneTask_table WHERE dayName = :id ")
+    LiveData<List<OneTask>> getNeeded(String id);
 
 }

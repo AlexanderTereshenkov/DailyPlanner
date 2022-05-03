@@ -78,7 +78,6 @@ public class TaskAdapter extends ListAdapter<OneTask, TaskAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     itemTouchHelperAdapter.onItemClick(getAbsoluteAdapterPosition());
-
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {

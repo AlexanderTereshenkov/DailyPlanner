@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey;
 public class OneTask {
     @PrimaryKey
     @NonNull
+    String dayName;
+    @NonNull
     @ColumnInfo(name = "task")
     private String taskHeading;
 
@@ -22,4 +24,7 @@ public class OneTask {
         return taskHeading;
     }
 
+    public void setDayName(@NonNull String dayName) {
+        this.dayName = dayName;
+    }
 }

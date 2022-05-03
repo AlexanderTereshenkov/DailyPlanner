@@ -1,101 +1,89 @@
 package com.example.finaldailyplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class WeeklyTasks extends AppCompatActivity {
-    private String[] mGroupsArray = new String[] { "Зима", "Весна", "Лето", "Осень" };
-
-    private String[] mWinterMonthsArray = new String[] { "Декабрь", "Январь", "Февраль" };
-    private String[] mSpringMonthsArray = new String[] { "Март", "Апрель", "Май" };
-    private String[] mSummerMonthsArray = new String[] { "Июнь", "Июль", "Август" };
-    private String[] mAutumnMonthsArray = new String[] { "Сентябрь", "Октябрь", "Ноябрь" };
-
+public class WeeklyTasks extends AppCompatActivity implements ItemTouchHelperAdapter {
+    RecyclerView recyclerView_monday;
+    RecyclerView recyclerView_tuesday;
+    RecyclerView recyclerView_wednesday;
+    RecyclerView recyclerView_thursday;
+    RecyclerView recyclerView_friday;
+    RecyclerView recyclerView_saturday;
+    RecyclerView recyclerView_sunday;
+    private RecyclerView[] list = new RecyclerView[7];
+    TaskAdapter taskAdapter;
+    TaskViewModel taskViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weekly_tasks);
-        Map<String, String> map;
-        // коллекция для групп
-        ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
-        // заполняем коллекцию групп из массива с названиями групп
-
-        for (String group : mGroupsArray) {
-            // заполняем список атрибутов для каждой группы
-            map = new HashMap<>();
-            map.put("groupName", group); // время года
-            groupDataList.add(map);
-        }
-
-        // список атрибутов групп для чтения
-        String groupFrom[] = new String[] { "groupName" };
-        // список ID view-элементов, в которые будет помещены атрибуты групп
-        int groupTo[] = new int[] { android.R.id.text1 };
-
-        // создаем общую коллекцию для коллекций элементов
-        ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
-
-        // в итоге получится сhildDataList = ArrayList<сhildDataItemList>
-
-        // создаем коллекцию элементов для первой группы
-        ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
-        // заполняем список атрибутов для каждого элемента
-        for (String month : mWinterMonthsArray) {
-            map = new HashMap<>();
-            map.put("monthName", month); // название месяца
-            сhildDataItemList.add(map);
-        }
-        // добавляем в коллекцию коллекций
-        сhildDataList.add(сhildDataItemList);
-
-        // создаем коллекцию элементов для второй группы
-        сhildDataItemList = new ArrayList<>();
-        for (String month : mSpringMonthsArray) {
-            map = new HashMap<>();
-            map.put("monthName", month);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-
-        // создаем коллекцию элементов для третьей группы
-        сhildDataItemList = new ArrayList<>();
-        for (String month : mSummerMonthsArray) {
-            map = new HashMap<>();
-            map.put("monthName", month);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-
-        // создаем коллекцию элементов для четвертой группы
-        сhildDataItemList = new ArrayList<>();
-        for (String month : mAutumnMonthsArray) {
-            map = new HashMap<>();
-            map.put("monthName", month);
-            сhildDataItemList.add(map);
-        }
-        сhildDataList.add(сhildDataItemList);
-
-        // список атрибутов элементов для чтения
-        String childFrom[] = new String[] { "monthName" };
-        // список ID view-элементов, в которые будет помещены атрибуты
-        // элементов
-        int childTo[] = new int[] { android.R.id.text1 };
-
-        SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
-                this, groupDataList,
-                android.R.layout.simple_expandable_list_item_1, groupFrom,
-                groupTo, сhildDataList, android.R.layout.simple_list_item_1,
-                childFrom, childTo);
-
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expList);
-        expandableListView.setAdapter(adapter);
 
     }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    private void openDialog(int pos){
+        ConfirmDeleteTaskFrahment confirmDeleteTaskFrahment = new ConfirmDeleteTaskFrahment();
+        confirmDeleteTaskFrahment.setPosition(pos);
+        confirmDeleteTaskFrahment.getTaskExample(taskViewModel);
+        confirmDeleteTaskFrahment.show(getSupportFragmentManager(), "bruh");
+    }
+
+    @Override
+    public void onLongClick(int position) {
+        openDialog(position);
+    }
+
+    private void setUpAdapters(){
+        recyclerView_monday = findViewById(R.id.monday_view);
+        recyclerView_tuesday = findViewById(R.id.tuesday_view);
+        recyclerView_wednesday = findViewById(R.id.wednesday_view);
+        recyclerView_thursday = findViewById(R.id.thursday_view);
+        recyclerView_friday = findViewById(R.id.friday_view);
+        recyclerView_saturday = findViewById(R.id.saturday_view);
+        recyclerView_sunday = findViewById(R.id.sunday_view);
+
+        list[0] = recyclerView_monday;
+        list[1] = recyclerView_tuesday;
+        list[2] = recyclerView_wednesday;
+        list[3] = recyclerView_thursday;
+        list[4] = recyclerView_friday;
+        list[5] = recyclerView_friday;
+        list[6] = recyclerView_sunday;
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        for(int i = 0; i < list.length; i++){
+            list[i].setLayoutManager(layoutManager);
+        }
+
+        taskAdapter = new TaskAdapter(new TaskAdapter.WordDiff(), this, this);
+
+        for(int i = 0; i < list.length; i++){
+            list[i].setAdapter(taskAdapter);
+        }
+
+        SpaceBetweenItems spaceBetweenItems = new SpaceBetweenItems(20);
+        for(int i = 0; i < list.length; i++){
+            list[i].addItemDecoration(spaceBetweenItems);
+        }
+
+        taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+        taskViewModel.getAllTasks().observe(this, oneTask -> {
+            taskAdapter.submitList(oneTask);
+        });
+
+    }
+
+
 }

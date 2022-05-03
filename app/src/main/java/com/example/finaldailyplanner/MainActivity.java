@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
     FloatingActionButton floatingActionButton;
     private TaskViewModel taskViewModel;
     public static final int NEW_WORD_ACTIVITY = 1;
+    Button button;
+    WeeklyTasks weeklyTasks = new WeeklyTasks();
     //shared Preferences
     //https://weeklycoding.com/mpandroidchart/
     @Override
@@ -43,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
                 startActivityForResult(intent, NEW_WORD_ACTIVITY);
             }
         });
+        button = findViewById(R.id.new_activity);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WeeklyTasks.class);
+                startActivity(intent);
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         taskAdapter = new TaskAdapter(new TaskAdapter.WordDiff(), this, this);
@@ -55,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
             taskAdapter.submitList(oneTask);
         });
         taskAdapter.getTaskViewModel(taskViewModel);
-
         ItemTouchHelper.Callback callback = new ItemsSwipe(taskAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
