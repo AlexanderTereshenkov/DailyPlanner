@@ -1,12 +1,15 @@
 package com.example.finaldailyplanner;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +18,17 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class ItemsSwipe extends ItemTouchHelper.Callback {
     TaskAdapter taskAdapter;
+    private int onSwipeLeft = 0;
+    private int onSwipeRight = 0;
+    NumberStorage numberStorage = new NumberStorage();
+
+    public void setOnSwipeLeft(int onSwipeLeft) {
+        this.onSwipeLeft = onSwipeLeft;
+    }
+
+    public void setOnSwipeRight(int onSwipeRight) {
+        this.onSwipeRight = onSwipeRight;
+    }
 
     public ItemsSwipe(TaskAdapter taskAdapter) {
         this.taskAdapter = taskAdapter;
@@ -33,9 +47,11 @@ public class ItemsSwipe extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         if(direction == ItemTouchHelper.LEFT){
+           numberStorage.swipeLeft();
             taskAdapter.deleteTask(viewHolder.getAbsoluteAdapterPosition());
         }
         else{
+            numberStorage.swipeRight();
             taskAdapter.deleteTask(viewHolder.getAbsoluteAdapterPosition());
             Log.i("Log_task", "Right");
         }

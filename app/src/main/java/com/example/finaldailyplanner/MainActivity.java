@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -26,12 +27,11 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
     RecyclerView recyclerView;
     TaskAdapter taskAdapter;
     FloatingActionButton floatingActionButton;
+    Button button;
     private TaskViewModel taskViewModel;
     public static final int NEW_WORD_ACTIVITY = 1;
-    Button button;
-    WeeklyTasks weeklyTasks = new WeeklyTasks();
-    //shared Preferences
-    //https://weeklycoding.com/mpandroidchart/
+    private NumberStorage numberStorage = new NumberStorage();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
         ItemTouchHelper.Callback callback = new ItemsSwipe(taskAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        numberStorage.setOnSwipeLeft(sharedPreferences.getInt("Done", 0));
+        numberStorage.setOnSwipeRight(sharedPreferences.getInt("NotDone", 0));
     }
     private void openDialog(int pos){
         ConfirmDeleteTaskFrahment confirmDeleteTaskFrahment = new ConfirmDeleteTaskFrahment();

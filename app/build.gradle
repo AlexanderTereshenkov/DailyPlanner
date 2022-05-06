@@ -62,6 +62,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
     implementation 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
+    implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
 
 
 }
