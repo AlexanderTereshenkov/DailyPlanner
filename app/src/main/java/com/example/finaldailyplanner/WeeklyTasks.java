@@ -28,13 +28,13 @@ public class WeeklyTasks extends AppCompatActivity{
         setContentView(R.layout.activity_weekly_tasks);
         pieChart = findViewById(R.id.diagram);
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        setData(sharedPreferences.getInt("Done", 0), sharedPreferences.getInt("NotDone", 0));
+        setData(sharedPreferences.getInt("SwipeLeft", 0), sharedPreferences.getInt("SwipeRight", 0));
     }
     private void setData(int doneTasks, int notDoneTasks){
         pieChart.addPieSlice(
                 new PieModel(
                         "Не выполнено",
-                        doneTasks,
+                        notDoneTasks,
                         Color.RED
                 )
         );
@@ -42,9 +42,10 @@ public class WeeklyTasks extends AppCompatActivity{
 
                 new PieModel(
                         "Выполнено",
-                        notDoneTasks,
+                        doneTasks,
                         Color.GREEN
                 )
         );
+        pieChart.startAnimation();
     }
 }

@@ -23,14 +23,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity implements ItemTouchHelperAdapter{
+public class MainActivity extends AppCompatActivity implements ItemTouchHelperAdapter, swipeListener{
     RecyclerView recyclerView;
     TaskAdapter taskAdapter;
     FloatingActionButton floatingActionButton;
     Button button;
     private TaskViewModel taskViewModel;
     public static final int NEW_WORD_ACTIVITY = 1;
-    private NumberStorage numberStorage = new NumberStorage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +64,10 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
             taskAdapter.submitList(oneTask);
         });
         taskAdapter.getTaskViewModel(taskViewModel);
-        ItemTouchHelper.Callback callback = new ItemsSwipe(taskAdapter);
+        ItemTouchHelper.Callback callback = new ItemsSwipe(taskAdapter, this);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        numberStorage.setOnSwipeLeft(sharedPreferences.getInt("Done", 0));
-        numberStorage.setOnSwipeRight(sharedPreferences.getInt("NotDone", 0));
     }
     private void openDialog(int pos){
         ConfirmDeleteTaskFrahment confirmDeleteTaskFrahment = new ConfirmDeleteTaskFrahment();
@@ -102,5 +98,25 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
             OneTask oneTask = new OneTask(data.getStringExtra(MainActivity2.EXTRA_REPLY));
             taskViewModel.insert(oneTask);
         }
+    }
+
+    @Override
+    public void swipeLeft() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int swipeLeftCounter = sharedPreferences.getInt("SwipeLeft", 0) + 1;
+        editor.putInt("SwipeLeft", swipeLeftCounter);
+        editor.apply();
+        Toast.makeText(this, "Left", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void swipeRight() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int swipeRightCounter = sharedPreferences.getInt("SwipeRight", 0) + 1;
+        editor.putInt("SwipeRight", swipeRightCounter);
+        editor.apply();
+        Toast.makeText(this, "Right", Toast.LENGTH_LONG).show();
     }
 }

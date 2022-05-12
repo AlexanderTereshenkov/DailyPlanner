@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,20 +19,11 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class ItemsSwipe extends ItemTouchHelper.Callback {
     TaskAdapter taskAdapter;
-    private int onSwipeLeft = 0;
-    private int onSwipeRight = 0;
-    NumberStorage numberStorage = new NumberStorage();
+    private swipeListener SwipeListener;
 
-    public void setOnSwipeLeft(int onSwipeLeft) {
-        this.onSwipeLeft = onSwipeLeft;
-    }
-
-    public void setOnSwipeRight(int onSwipeRight) {
-        this.onSwipeRight = onSwipeRight;
-    }
-
-    public ItemsSwipe(TaskAdapter taskAdapter) {
+    public ItemsSwipe(TaskAdapter taskAdapter, swipeListener SwipeListener) {
         this.taskAdapter = taskAdapter;
+        this.SwipeListener = SwipeListener;
     }
 
     @Override
@@ -47,11 +39,11 @@ public class ItemsSwipe extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         if(direction == ItemTouchHelper.LEFT){
-           numberStorage.swipeLeft();
+            SwipeListener.swipeLeft();
             taskAdapter.deleteTask(viewHolder.getAbsoluteAdapterPosition());
         }
         else{
-            numberStorage.swipeRight();
+            SwipeListener.swipeRight();
             taskAdapter.deleteTask(viewHolder.getAbsoluteAdapterPosition());
             Log.i("Log_task", "Right");
         }
@@ -62,7 +54,7 @@ public class ItemsSwipe extends ItemTouchHelper.Callback {
                             @NonNull RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                .addSwipeLeftBackgroundColor(Color.GREEN)
+                .addSwipeLeftBackgroundColor(Color.parseColor("#90EE90"))
                 .addSwipeLeftActionIcon(R.drawable.ic_baseline_check_24)
                 .addSwipeRightBackgroundColor(Color.RED)
                 .addSwipeRightActionIcon(R.drawable.ic_baseline_close_24)
