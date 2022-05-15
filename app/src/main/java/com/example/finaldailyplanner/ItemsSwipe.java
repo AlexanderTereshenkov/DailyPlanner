@@ -1,16 +1,14 @@
 package com.example.finaldailyplanner;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
+
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 

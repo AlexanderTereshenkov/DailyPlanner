@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FinalDailyPlanner</string>
+    <string name="app_name">Daily planner</string>
+    <string name="button_text">Статистика</string>
 </resources>

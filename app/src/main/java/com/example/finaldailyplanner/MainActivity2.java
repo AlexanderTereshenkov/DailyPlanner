@@ -19,6 +19,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         editText = findViewById(R.id.task_text);
         button = findViewById(R.id.ok_btn);
         button.setOnClickListener(new View.OnClickListener() {

@@ -1,25 +1,31 @@
 package com.example.finaldailyplanner;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 
 
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
     RecyclerView recyclerView;
     TaskAdapter taskAdapter;
     FloatingActionButton floatingActionButton;
-    Button button;
+    MaterialButton button;
     private TaskViewModel taskViewModel;
     public static final int NEW_WORD_ACTIVITY = 1;
 
@@ -79,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
     //создавать фрагмент для добавления
     @Override
     public void onItemClick(int position) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-        Date date = new Date();
-        String dayName = simpleDateFormat.format(date);
-        Toast.makeText(this, dayName, Toast.LENGTH_LONG).show();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
+//        Date date = new Date();
+//        String dayName = simpleDateFormat.format(date);
+//        Toast.makeText(this, dayName, Toast.LENGTH_LONG).show();
     }
 
     //удаление задания полностью
@@ -107,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
         int swipeLeftCounter = sharedPreferences.getInt("SwipeLeft", 0) + 1;
         editor.putInt("SwipeLeft", swipeLeftCounter);
         editor.apply();
-        Toast.makeText(this, "Left", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -117,6 +122,20 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
         int swipeRightCounter = sharedPreferences.getInt("SwipeRight", 0) + 1;
         editor.putInt("SwipeRight", swipeRightCounter);
         editor.apply();
-        Toast.makeText(this, "Right", Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        if(taskViewModel.getAllTasks().getValue().size() != 0){
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000,  AlarmManager.INTERVAL_HOUR, pendingIntent);
+        }
+        else{
+            alarmManager.cancel(pendingIntent);
+        }
+    }
+
 }
