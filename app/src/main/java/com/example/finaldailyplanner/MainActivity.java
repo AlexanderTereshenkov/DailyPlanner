@@ -82,13 +82,10 @@ public class MainActivity extends AppCompatActivity implements ItemTouchHelperAd
         confirmDeleteTaskFrahment.show(getSupportFragmentManager(), "bruh");
     }
 
-    //создавать фрагмент для добавления
+
     @Override
     public void onItemClick(int position) {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-//        Date date = new Date();
-//        String dayName = simpleDateFormat.format(date);
-//        Toast.makeText(this, dayName, Toast.LENGTH_LONG).show();
+
     }
 
     //удаление задания полностью

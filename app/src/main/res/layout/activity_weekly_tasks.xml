@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#faf0e6"
     tools:context=".WeeklyTasks">
 
     <org.eazegraph.lib.charts.PieChart

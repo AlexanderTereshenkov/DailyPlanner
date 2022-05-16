@@ -1,23 +1,16 @@
 package com.example.finaldailyplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 import android.widget.TextView;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
-import java.util.List;
 
 
 public class WeeklyTasks extends AppCompatActivity{
@@ -25,7 +18,7 @@ public class WeeklyTasks extends AppCompatActivity{
     TextView allTasks;
     TextView doneTasks;
     TextView notDoneTasks;
-    //#87ceeb изначальный цвет
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,11 +15,7 @@ public class DataRepository {
     DataRepository(Application application){
         TaskDataBase taskDataBase = TaskDataBase.getDatabase(application);
         taskDao = taskDataBase.taskDao();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-        Date date = new Date();
-        String dayName = simpleDateFormat.format(date);
         taskList = taskDao.getAll();
-
     }
     LiveData<List<OneTask>> getTaskList(){
         return taskList;

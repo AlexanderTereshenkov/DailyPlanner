@@ -8,14 +8,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,15 +26,6 @@ public class TaskAdapter extends ListAdapter<OneTask, TaskAdapter.ViewHolder> {
     public void getTaskViewModel(TaskViewModel taskViewModel){
         this.taskViewModel = taskViewModel;
     }
-
-
-//    public TaskAdapter(Context context, ArrayList<OneTask> tasksList, ItemTouchHelperAdapter itemTouchHelperAdapter,
-//                       DiffUtil.ItemCallback<OneTask> diffCallback) {
-//        this.diffUtil = diffCallback;
-//        this.layoutInflater = LayoutInflater.from(context);
-//        this.tasksList = tasksList;
-//        this.itemTouchHelperAdapter = itemTouchHelperAdapter;
-//    }
 
 
     public TaskAdapter(@NonNull DiffUtil.ItemCallback<OneTask> diffCallback, ItemTouchHelperAdapter itemTouchHelperAdapter, Context context) {
